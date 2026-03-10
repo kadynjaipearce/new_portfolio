@@ -50,6 +50,6 @@ EXPOSE 8080
 ENV HOST=0.0.0.0
 ENV PORT=8080
 ENV RUST_LOG=info
-ENV DATABASE_URL=file://data/portfolio.db
+ENV DATABASE_URL=file:///app/data/portfolio.db
 
 CMD ["./portfolio"]
