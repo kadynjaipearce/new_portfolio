@@ -1,0 +1,93 @@
+{% extends "admin/layout.html" %}
+
+{% block header %}Skills{% endblock %}
+
+{% block content %}
+<div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+    <!-- Add Skill Form -->
+    <div class="bg-white rounded-xl border border-grid p-6">
+        <h2 class="font-semibold mb-4">Add New Skill</h2>
+        <form action="/admin/skills/new" method="POST" class="space-y-4">
+            <div>
+                <label for="name" class="block text-sm font-medium mb-2">Skill Name</label>
+                <input type="text" id="name" name="name" required
+                       class="w-full px-4 py-2 border border-grid rounded-lg focus:outline-none focus:ring-2 focus:ring-accent/20 focus:border-accent"
+                       placeholder="e.g., Rust">
+            </div>
+            
+            <div>
+                <label for="category" class="block text-sm font-medium mb-2">Category</label>
+                <select id="category" name="category" required
+                        class="w-full px-4 py-2 border border-grid rounded-lg focus:outline-none focus:ring-2 focus:ring-accent/20 focus:border-accent">
+                    <option value="language">Language</option>
+                    <option value="framework">Framework</option>
+                    <option value="infra">Infrastructure</option>
+                    <option value="tool">Tool</option>
+                </select>
+            </div>
+            
+            <div>
+                <label for="proficiency" class="block text-sm font-medium mb-2">Proficiency (1-5)</label>
+                <input type="number" id="proficiency" name="proficiency" required min="1" max="5"
+                       value="3"
+                       class="w-full px-4 py-2 border border-grid rounded-lg focus:outline-none focus:ring-2 focus:ring-accent/20 focus:border-accent">
+            </div>
+            
+            <div>
+                <label for="icon" class="block text-sm font-medium mb-2">Icon (optional)</label>
+                <input type="text" id="icon" name="icon"
+                       class="w-full px-4 py-2 border border-grid rounded-lg focus:outline-none focus:ring-2 focus:ring-accent/20 focus:border-accent"
+                       placeholder="e.g., rust">
+            </div>
+            
+            <button type="submit" class="w-full px-4 py-2 bg-accent text-white rounded-lg font-medium hover:bg-accent/90 transition-colors">
+                Add Skill
+            </button>
+        </form>
+    </div>
+    
+    <!-- Skills List -->
+    <div class="bg-white rounded-xl border border-grid p-6">
+        <h2 class="font-semibold mb-4">Current Skills</h2>
+        
+        {% for category, category_skills in skills %}
+        <div class="mb-6 last:mb-0">
+            <h3 class="text-sm font-medium text-secondary uppercase tracking-wider mb-3">
+                {% if category == 'language' %}Languages
+                {% elif category == 'framework' %}Frameworks
+                {% elif category == 'infra' %}Infrastructure
+                {% elif category == 'tool' %}Tools
+                {% else %}{{ category }}{% endif %}
+            </h3>
+            
+            <div class="space-y-2">
+                {% for skill in category_skills %}
+                <div class="flex items-center justify-between py-2 px-3 bg-gray-50 rounded-lg">
+                    <div class="flex items-center gap-3">
+                        <span class="font-medium">{{ skill.name }}</span>
+                        <div class="flex gap-1">
+                            {% for i in range(end=5) %}
+                            <div class="w-1.5 h-1.5 rounded-full {% if i < skill.proficiency %}bg-accent{% else %}bg-gray-300{% endif %}"></div>
+                            {% endfor %}
+                        </div>
+                    </div>
+                    <form action="/admin/skills/{{ skill.id.id.String }}/delete" method="POST"
+                          onsubmit="return confirm('Delete this skill?')">
+                        <button type="submit" class="p-1 text-red-500 hover:text-red-700 transition-colors">
+                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
+                            </svg>
+                        </button>
+                    </form>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+        {% endfor %}
+        
+        {% if skills | length == 0 %}
+        <p class="text-secondary text-center py-8">No skills added yet.</p>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}

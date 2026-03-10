@@ -1,0 +1,77 @@
+{% extends "admin/layout.html" %}
+
+{% block header %}{% if experience %}Edit Experience{% else %}Add Experience{% endif %}{% endblock %}
+
+{% block content %}
+<div class="max-w-2xl">
+    <form action="{% if experience %}/admin/experience/{{ experience.id.id.String }}/edit{% else %}/admin/experience/new{% endif %}" method="POST" class="space-y-6">
+        <div class="bg-white rounded-xl border border-grid p-6 space-y-6">
+            <div>
+                <label for="company" class="block text-sm font-medium mb-2">Company</label>
+                <input type="text" id="company" name="company" required
+                       value="{% if experience %}{{ experience.company }}{% endif %}"
+                       class="w-full px-4 py-2 border border-grid rounded-lg focus:outline-none focus:ring-2 focus:ring-accent/20 focus:border-accent"
+                       placeholder="Company name">
+            </div>
+            
+            <div>
+                <label for="role" class="block text-sm font-medium mb-2">Role</label>
+                <input type="text" id="role" name="role" required
+                       value="{% if experience %}{{ experience.role }}{% endif %}"
+                       class="w-full px-4 py-2 border border-grid rounded-lg focus:outline-none focus:ring-2 focus:ring-accent/20 focus:border-accent"
+                       placeholder="Your job title">
+            </div>
+            
+            <div>
+                <label for="description" class="block text-sm font-medium mb-2">Description</label>
+                <textarea id="description" name="description" rows="4" required
+                          class="w-full px-4 py-2 border border-grid rounded-lg focus:outline-none focus:ring-2 focus:ring-accent/20 focus:border-accent resize-none"
+                          placeholder="What you did, technologies used, achievements...">{% if experience %}{{ experience.description }}{% endif %}</textarea>
+            </div>
+            
+            <div class="grid grid-cols-2 gap-4">
+                <div>
+                    <label for="start_date" class="block text-sm font-medium mb-2">Start Date</label>
+                    <input type="text" id="start_date" name="start_date" required
+                           value="{% if experience %}{{ experience.start_date }}{% endif %}"
+                           class="w-full px-4 py-2 border border-grid rounded-lg focus:outline-none focus:ring-2 focus:ring-accent/20 focus:border-accent"
+                           placeholder="YYYY-MM">
+                </div>
+                
+                <div>
+                    <label for="end_date" class="block text-sm font-medium mb-2">End Date</label>
+                    <input type="text" id="end_date" name="end_date"
+                           value="{% if experience %}{{ experience.end_date | default(value='') }}{% endif %}"
+                           class="w-full px-4 py-2 border border-grid rounded-lg focus:outline-none focus:ring-2 focus:ring-accent/20 focus:border-accent"
+                           placeholder="YYYY-MM (leave empty if current)">
+                </div>
+            </div>
+            
+            <div>
+                <label for="order_index" class="block text-sm font-medium mb-2">Display Order</label>
+                <input type="number" id="order_index" name="order_index" required
+                       value="{% if experience %}{{ experience.order_index }}{% else %}1{% endif %}"
+                       class="w-full px-4 py-2 border border-grid rounded-lg focus:outline-none focus:ring-2 focus:ring-accent/20 focus:border-accent"
+                       placeholder="1">
+                <p class="text-xs text-secondary mt-1">Lower numbers appear first</p>
+            </div>
+            
+            <div class="flex items-center gap-3">
+                <input type="checkbox" id="current" name="current" value="true"
+                       {% if experience and experience.current %}checked{% endif %}
+                       class="w-4 h-4 text-accent border-grid rounded focus:ring-accent">
+                <label for="current" class="text-sm font-medium">This is my current role</label>
+            </div>
+        </div>
+        
+        <div class="flex items-center gap-4">
+            <button type="submit" class="px-6 py-2 bg-accent text-white rounded-lg font-medium hover:bg-accent/90 transition-colors">
+                {% if experience %}Update{% else %}Add{% endif %} Experience
+            </button>
+            <a href="/admin/experience" class="px-6 py-2 border border-grid rounded-lg font-medium hover:border-primary transition-colors">
+                Cancel
+            </a>
+        </div>
+    </form>
+</div>
+{% endblock %}

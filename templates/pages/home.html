@@ -1,0 +1,228 @@
+{% extends "base.html" %}
+
+{% block content %}
+{% include "components/nav.html" %}
+
+<main>
+    <!-- Hero Section -->
+    <section class="min-h-screen grid-bg relative">
+        <div class="max-w-6xl mx-auto px-6 pt-32 pb-20">
+            <div class="grid grid-cols-1 lg:grid-cols-3 gap-12 items-start">
+                <!-- Main Content -->
+                <div class="lg:col-span-2 animate-fade-in">
+                    <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-accent/10 text-accent text-xs font-medium mb-6">
+                        <span class="w-2 h-2 rounded-full bg-success animate-pulse"></span>
+                        Available for opportunities
+                    </div>
+                    
+                    <h1 class="text-4xl md:text-5xl lg:text-6xl font-bold leading-tight mb-6">
+                        Hi, I'm Kadyn<span class="text-accent">.</span>
+                    </h1>
+                    
+                    <p class="text-xl md:text-2xl text-secondary mb-4">
+                        I build 
+                        <span class="text-primary font-semibold typing-cursor" data-typing='["trading systems", "smart contracts", "ML pipelines", "embedded firmware", "distributed systems"]'></span>
+                    </p>
+                    
+                    <p class="text-secondary max-w-xl mb-8">
+                        Software engineer specializing in high-performance systems. I work at the intersection of 
+                        <span class="text-primary font-medium">finance</span>, 
+                        <span class="text-primary font-medium">blockchain</span>, and 
+                        <span class="text-primary font-medium">machine learning</span>.
+                    </p>
+                    
+                    <div class="flex flex-wrap gap-4">
+                        <a href="/projects" class="inline-flex items-center gap-2 px-6 py-3 bg-primary text-white rounded-lg font-medium hover:bg-primary/90 transition-colors">
+                            View Projects
+                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"/>
+                            </svg>
+                        </a>
+                        <a href="/blog" class="inline-flex items-center gap-2 px-6 py-3 border border-grid rounded-lg font-medium hover:border-primary transition-colors">
+                            Read Blog
+                        </a>
+                    </div>
+                </div>
+                
+                <!-- Stats Card -->
+                <div class="bg-white border border-grid rounded-xl p-6 shadow-sm animate-slide-up">
+                    <h3 class="text-xs font-semibold text-secondary uppercase tracking-wider mb-4">Quick Stats</h3>
+                    
+                    <div class="space-y-4">
+                        <div class="flex items-center justify-between py-3 border-b border-grid">
+                            <span class="text-sm text-secondary">Projects</span>
+                            <span class="font-mono font-semibold counter" data-counter="{{ featured_projects | length | default(value=6) }}">0</span>
+                        </div>
+                        {% if github_stats %}
+                        <div class="flex items-center justify-between py-3 border-b border-grid">
+                            <span class="text-sm text-secondary">Repositories</span>
+                            <span class="font-mono font-semibold counter" data-counter="{{ github_stats.public_repos }}">0</span>
+                        </div>
+                        <div class="flex items-center justify-between py-3 border-b border-grid">
+                            <span class="text-sm text-secondary">GitHub Stars</span>
+                            <span class="font-mono font-semibold counter" data-counter="{{ github_stats.total_stars }}">0</span>
+                        </div>
+                        {% endif %}
+                        <div class="flex items-center justify-between py-3">
+                            <span class="text-sm text-secondary">Articles</span>
+                            <span class="font-mono font-semibold counter" data-counter="{{ recent_posts | length | default(value=4) }}">0</span>
+                        </div>
+                    </div>
+                    
+                    <a href="https://github.com/kadynjaipearce" target="_blank" rel="noopener" 
+                       class="mt-6 flex items-center justify-center gap-2 w-full py-2.5 border border-grid rounded-lg text-sm font-medium hover:border-primary transition-colors">
+                        <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24">
+                            <path fill-rule="evenodd" d="M12 2C6.477 2 2 6.484 2 12.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.531 1.032 1.531 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0112 6.844c.85.004 1.705.115 2.504.337 1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.202 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.019 10.019 0 0022 12.017C22 6.484 17.522 2 12 2z" clip-rule="evenodd"/>
+                        </svg>
+                        View GitHub Profile
+                    </a>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <!-- Featured Projects -->
+    <section class="py-20 bg-white border-t border-grid">
+        <div class="max-w-6xl mx-auto px-6">
+            <div class="flex items-end justify-between mb-12">
+                <div>
+                    <h2 class="text-2xl md:text-3xl font-bold mb-2">Featured Projects</h2>
+                    <p class="text-secondary">Some of my recent work</p>
+                </div>
+                <a href="/projects" class="hidden md:inline-flex items-center gap-2 text-sm font-medium text-accent hover:underline">
+                    View all projects
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"/>
+                    </svg>
+                </a>
+            </div>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                {% for project in featured_projects %}
+                <article class="group border border-grid rounded-xl p-6 hover:border-primary/50 hover:shadow-lg transition-all duration-300">
+                    <div class="flex items-start justify-between mb-4">
+                        <span class="px-2.5 py-1 text-xs font-medium rounded-full 
+                            {% if project.category == 'finance' %}bg-emerald-100 text-emerald-700
+                            {% elif project.category == 'blockchain' %}bg-purple-100 text-purple-700
+                            {% elif project.category == 'ml' %}bg-blue-100 text-blue-700
+                            {% elif project.category == 'embedded' %}bg-orange-100 text-orange-700
+                            {% else %}bg-gray-100 text-gray-700{% endif %}">
+                            {{ project.category }}
+                        </span>
+                        {% if project.github_url %}
+                        <a href="{{ project.github_url }}" target="_blank" rel="noopener" class="text-secondary hover:text-primary transition-colors">
+                            <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
+                                <path fill-rule="evenodd" d="M12 2C6.477 2 2 6.484 2 12.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.531 1.032 1.531 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0112 6.844c.85.004 1.705.115 2.504.337 1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.202 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.019 10.019 0 0022 12.017C22 6.484 17.522 2 12 2z" clip-rule="evenodd"/>
+                            </svg>
+                        </a>
+                        {% endif %}
+                    </div>
+                    
+                    <h3 class="text-lg font-semibold mb-2 group-hover:text-accent transition-colors">
+                        <a href="/projects/{{ project.slug }}">{{ project.title }}</a>
+                    </h3>
+                    
+                    <p class="text-sm text-secondary mb-4 line-clamp-2">{{ project.description }}</p>
+                    
+                    <div class="flex flex-wrap gap-2">
+                        {% for tech in project.tech_stack | slice(end=4) %}
+                        <span class="px-2 py-1 text-xs font-mono bg-gray-100 rounded">{{ tech }}</span>
+                        {% endfor %}
+                    </div>
+                </article>
+                {% endfor %}
+            </div>
+            
+            <div class="mt-8 text-center md:hidden">
+                <a href="/projects" class="inline-flex items-center gap-2 text-sm font-medium text-accent hover:underline">
+                    View all projects
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"/>
+                    </svg>
+                </a>
+            </div>
+        </div>
+    </section>
+    
+    <!-- Tech Stack -->
+    <section class="py-20 grid-bg border-t border-grid">
+        <div class="max-w-6xl mx-auto px-6">
+            <div class="text-center mb-12">
+                <h2 class="text-2xl md:text-3xl font-bold mb-2">Tech Stack</h2>
+                <p class="text-secondary">Technologies I work with daily</p>
+            </div>
+            
+            <div class="flex flex-wrap justify-center gap-3">
+                {% for skill in skills %}
+                <div class="px-4 py-2 bg-white border border-grid rounded-lg text-sm font-medium hover:border-primary hover:shadow-sm transition-all">
+                    {{ skill.name }}
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+    </section>
+    
+    <!-- Recent Posts -->
+    {% if recent_posts | length > 0 %}
+    <section class="py-20 bg-white border-t border-grid">
+        <div class="max-w-6xl mx-auto px-6">
+            <div class="flex items-end justify-between mb-12">
+                <div>
+                    <h2 class="text-2xl md:text-3xl font-bold mb-2">Recent Articles</h2>
+                    <p class="text-secondary">Thoughts on engineering and technology</p>
+                </div>
+                <a href="/blog" class="hidden md:inline-flex items-center gap-2 text-sm font-medium text-accent hover:underline">
+                    View all articles
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"/>
+                    </svg>
+                </a>
+            </div>
+            
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                {% for post in recent_posts %}
+                <article class="group border border-grid rounded-xl p-6 hover:border-primary/50 hover:shadow-lg transition-all duration-300">
+                    <div class="flex items-center gap-2 text-xs text-secondary mb-3">
+                        <span>{{ post.reading_time }} min read</span>
+                        <span class="w-1 h-1 rounded-full bg-secondary"></span>
+                        <span>{{ post.created_at | default(value="Recently") }}</span>
+                    </div>
+                    
+                    <h3 class="text-lg font-semibold mb-2 group-hover:text-accent transition-colors">
+                        <a href="/blog/{{ post.slug }}">{{ post.title }}</a>
+                    </h3>
+                    
+                    <p class="text-sm text-secondary mb-4 line-clamp-2">{{ post.excerpt }}</p>
+                    
+                    <div class="flex flex-wrap gap-2">
+                        {% for tag in post.tags | slice(end=3) %}
+                        <span class="px-2 py-1 text-xs text-accent bg-accent/10 rounded">{{ tag }}</span>
+                        {% endfor %}
+                    </div>
+                </article>
+                {% endfor %}
+            </div>
+        </div>
+    </section>
+    {% endif %}
+    
+    <!-- CTA Section -->
+    <section class="py-20 bg-primary text-white">
+        <div class="max-w-4xl mx-auto px-6 text-center">
+            <h2 class="text-2xl md:text-3xl font-bold mb-4">Let's Build Something Together</h2>
+            <p class="text-white/70 mb-8 max-w-2xl mx-auto">
+                I'm always interested in hearing about new projects and opportunities. 
+                Whether you need a high-performance system or just want to chat about technology, feel free to reach out.
+            </p>
+            <a href="/contact" class="inline-flex items-center gap-2 px-8 py-4 bg-white text-primary rounded-lg font-medium hover:bg-gray-100 transition-colors">
+                Get in Touch
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"/>
+                </svg>
+            </a>
+        </div>
+    </section>
+</main>
+
+{% include "components/footer.html" %}
+{% endblock %}

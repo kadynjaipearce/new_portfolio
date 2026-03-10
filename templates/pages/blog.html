@@ -1,0 +1,70 @@
+{% extends "base.html" %}
+
+{% block content %}
+{% include "components/nav.html" %}
+
+<main class="pt-24 pb-20">
+    <div class="max-w-4xl mx-auto px-6">
+        <!-- Header -->
+        <div class="mb-12">
+            <h1 class="text-3xl md:text-4xl font-bold mb-4">Blog</h1>
+            <p class="text-secondary max-w-2xl">
+                Thoughts on software engineering, systems design, and technology. 
+                Mostly about Rust, performance, and building things that scale.
+            </p>
+        </div>
+        
+        <!-- Posts List -->
+        <div class="space-y-8">
+            {% for post in posts %}
+            <article class="group pb-8 border-b border-grid last:border-0">
+                <div class="flex items-center gap-3 text-sm text-secondary mb-3">
+                    <span class="font-mono">{{ post.reading_time }} min read</span>
+                    <span class="w-1 h-1 rounded-full bg-secondary"></span>
+                    {% if post.created_at %}
+                    <time>{{ post.created_at }}</time>
+                    {% endif %}
+                </div>
+                
+                <h2 class="text-xl md:text-2xl font-semibold mb-3 group-hover:text-accent transition-colors">
+                    <a href="/blog/{{ post.slug }}">{{ post.title }}</a>
+                </h2>
+                
+                <p class="text-secondary mb-4">{{ post.excerpt }}</p>
+                
+                <div class="flex flex-wrap items-center gap-4">
+                    <div class="flex flex-wrap gap-2">
+                        {% for tag in post.tags %}
+                        <a href="/blog?tag={{ tag }}" 
+                           class="px-2 py-1 text-xs font-medium text-accent bg-accent/10 rounded hover:bg-accent/20 transition-colors">
+                            {{ tag }}
+                        </a>
+                        {% endfor %}
+                    </div>
+                    
+                    <a href="/blog/{{ post.slug }}" class="text-sm font-medium text-accent hover:underline inline-flex items-center gap-1">
+                        Read more
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"/>
+                        </svg>
+                    </a>
+                </div>
+            </article>
+            {% endfor %}
+        </div>
+        
+        {% if posts | length == 0 %}
+        <div class="text-center py-20">
+            <p class="text-secondary">No posts found.</p>
+            {% if current_tag %}
+            <a href="/blog" class="mt-4 inline-flex items-center gap-2 text-accent hover:underline">
+                View all posts
+            </a>
+            {% endif %}
+        </div>
+        {% endif %}
+    </div>
+</main>
+
+{% include "components/footer.html" %}
+{% endblock %}

@@ -1,0 +1,57 @@
+{% extends "admin/layout.html" %}
+
+{% block header %}{% if post %}Edit Post{% else %}New Post{% endif %}{% endblock %}
+
+{% block content %}
+<div class="max-w-3xl">
+    <form action="{% if post %}/admin/posts/{{ post.id.id.String }}/edit{% else %}/admin/posts/new{% endif %}" method="POST" class="space-y-6">
+        <div class="bg-white rounded-xl border border-grid p-6 space-y-6">
+            <div>
+                <label for="title" class="block text-sm font-medium mb-2">Title</label>
+                <input type="text" id="title" name="title" required
+                       value="{% if post %}{{ post.title }}{% endif %}"
+                       class="w-full px-4 py-2 border border-grid rounded-lg focus:outline-none focus:ring-2 focus:ring-accent/20 focus:border-accent"
+                       placeholder="Post title">
+            </div>
+            
+            <div>
+                <label for="excerpt" class="block text-sm font-medium mb-2">Excerpt</label>
+                <textarea id="excerpt" name="excerpt" rows="2" required
+                          class="w-full px-4 py-2 border border-grid rounded-lg focus:outline-none focus:ring-2 focus:ring-accent/20 focus:border-accent resize-none"
+                          placeholder="Brief summary for post cards">{% if post %}{{ post.excerpt }}{% endif %}</textarea>
+            </div>
+            
+            <div>
+                <label for="content" class="block text-sm font-medium mb-2">Content (Markdown)</label>
+                <textarea id="content" name="content" rows="20" required
+                          class="w-full px-4 py-2 border border-grid rounded-lg font-mono text-sm focus:outline-none focus:ring-2 focus:ring-accent/20 focus:border-accent"
+                          placeholder="# Introduction&#10;&#10;Your content in markdown...">{% if post %}{{ post.content }}{% endif %}</textarea>
+            </div>
+            
+            <div>
+                <label for="tags" class="block text-sm font-medium mb-2">Tags (comma-separated)</label>
+                <input type="text" id="tags" name="tags" required
+                       value="{% if post %}{{ post.tags | join(sep=', ') }}{% endif %}"
+                       class="w-full px-4 py-2 border border-grid rounded-lg focus:outline-none focus:ring-2 focus:ring-accent/20 focus:border-accent"
+                       placeholder="rust, performance, systems">
+            </div>
+            
+            <div class="flex items-center gap-3">
+                <input type="checkbox" id="published" name="published" value="true"
+                       {% if post and post.published %}checked{% endif %}
+                       class="w-4 h-4 text-accent border-grid rounded focus:ring-accent">
+                <label for="published" class="text-sm font-medium">Publish (make visible on the blog)</label>
+            </div>
+        </div>
+        
+        <div class="flex items-center gap-4">
+            <button type="submit" class="px-6 py-2 bg-accent text-white rounded-lg font-medium hover:bg-accent/90 transition-colors">
+                {% if post %}Update Post{% else %}Create Post{% endif %}
+            </button>
+            <a href="/admin/posts" class="px-6 py-2 border border-grid rounded-lg font-medium hover:border-primary transition-colors">
+                Cancel
+            </a>
+        </div>
+    </form>
+</div>
+{% endblock %}

@@ -1,0 +1,37 @@
+version: '3.8'
+
+services:
+  portfolio:
+    build:
+      context: .
+      dockerfile: Dockerfile.simplified
+    container_name: portfolio
+    ports:
+      - "8080:8080"
+    environment:
+      - HOST=0.0.0.0
+      - PORT=8080
+      - RUST_LOG=info
+      - DATABASE_URL=file://data/portfolio.db
+      - DATABASE_NS=portfolio
+      - DATABASE_DB=main
+      - GITHUB_CLIENT_ID=${GITHUB_CLIENT_ID}
+      - GITHUB_CLIENT_SECRET=${GITHUB_CLIENT_SECRET}
+      - GITHUB_REDIRECT_URI=${GITHUB_REDIRECT_URI:-http://localhost:8080/auth/github/callback}
+      - ADMIN_GITHUB_USERNAME=${ADMIN_GITHUB_USERNAME:-kadynjaipearce}
+      - SESSION_SECRET=${SESSION_SECRET}
+      - CONTACT_EMAIL=${CONTACT_EMAIL:-kadyn@kadynpearce.dev}
+      - RESEND_API_KEY=${RESEND_API_KEY}
+      - RESEND_FROM_EMAIL=${RESEND_FROM_EMAIL:-noreply@kadynpearce.dev}
+    volumes:
+      - portfolio_data:/app/data
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8080/"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+
+volumes:
+  portfolio_data:
